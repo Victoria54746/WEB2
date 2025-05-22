@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flawless Cosmetics</title>
+    <style>
+        :root {
+            --swiper-theme-color: #c71585;
+            --swiper-navigation-size: 44px;
+        }
+
+        html, body {
+            height: 100%;
+            font-family: 'Stolzl', Arial, sans-serif;
+            font-size: 14px;
+            background-color: #fff;
+            color: #1a1d1b;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body * {
+            box-sizing: border-box;
+        }
+
+        header, nav, main, footer {
+            padding: 20px;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            height: 50px;
+        }
+
+        nav a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #c71585;
+            font-weight: bold;
+        }
+
+        /* Стилі для випадаючого меню */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 10; /* Збільшено z-index */
+            border-radius: 5px;
+            padding: 10px 0;
+            left: -50px; /* Щоб меню було посередині відносно посилання */
+            top: 100%; /* Розміщуємо випадаюче меню під посиланням */
+            margin-top: 5px; /* Додаємо невеликий відступ */
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: #c71585;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-weight: normal;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f8f8f8;
+        }
+
+        /* Стилі для активного посилання */
+        nav a.active {
+            color: #b10e69;
+        }
+
+        /* Відеофон */
+        .video-background {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .video-background video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            min-width: 100%;
+            min-height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .video-overlay {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            text-align: center;
+            color: white;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        /* Адаптивне фонове зображення */
+        .main-text {
+            background-image: url('2421545-uhd_3840_2160_30fps.MP4');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 80px 20px;
+            text-align: center;
+            color: #fff;
+        }
+
+        @media (max-width: 768px) {
+            .main-text {
+                background-image: url('2421545-uhd_3840_2160_30fps.MP4');
+            }
+        }
+
+        /* Стилі для форми зворотного зв'язку */
+        .contact-form-container {
+            background-color: #f8f8f8;
+            padding: 40px;
+            border-radius: 10px;
+            margin: 20px auto;
+            max-width: 600px;
+        }
+
+        .contact-form-container h2 {
+            text-align: center;
+            color: #c71585;
+            margin-bottom: 20px;
+        }
+
+        .contact-form fieldset {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .contact-form legend {
+            font-size: 18px;
+            font-weight: bold;
+            color: #c71585;
+            padding: 0 10px;
+        }
+
+        .contact-form label {
+            display: block;
+            margin-top: 10px;
+            color: #555;
+        }
+
+        .contact-form input[type="text"],
+        .contact-form input[type="email"],
+        .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: none;
+        }
+
+        .contact-form textarea {
+            height: 120px;
+        }
+
+        .contact-form input[type="submit"] {
+            background-color: #c71585;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+            transition: background-color 0.3s ease;
+        }
+
+        .contact-form input[type="submit"]:hover {
+            background-color: #b10e69;
+        }
+
+        @media (max-width: 768px) {
+            .contact-form-container {
+                padding: 20px;
+            }
+            .contact-form input[type="text"],
+            .contact-form input[type="email"],
+            .contact-form textarea {
+                width: 100%;
+            }
+        }
+    </style>
+    <script>
+        function getRandomContent(items) {
+            const randomIndex = Math.floor(Math.random() * items.length);
+            return items[randomIndex];
+        }
+
+        function setDropdownContent(dropdownId, items) {
+            const dropdownContent = document.getElementById(dropdownId);
+            dropdownContent.innerHTML = '';
+            items.forEach(item => {
+                const a = document.createElement('a');
+                a.href = '#';
+                a.textContent = item;
+                dropdownContent.appendChild(a);
+            });
+        }
+
+        window.onload = function() {
+            const продукціяOptions = ['Догляд за обличчям', 'Догляд за тілом', 'Догляд за волоссям', 'Макіяж'];
+            const proнасOptions = ['Історія', 'Команда', 'Вакансії'];
+            const акціїOptions = ['Нові надходження', 'Гарячі знижки', 'Подарункові сертифікати'];
+            const контактиOptions = ['Наші магазини', 'Зворотній зв\'язок', 'Підтримка'];
+
+            setDropdownContent('продукція-dropdown', продукціяOptions);
+            setDropdownContent('pro-nas-dropdown', proнасOptions);
+            setDropdownContent('akcii-dropdown', акціїOptions);
+            setDropdownContent('kontakti-dropdown', контактиOptions);
+
+            // Додаємо клас active до посилання "Головна" при завантаженні сторінки
+            const головнаПосилання = document.querySelector('nav a[href="#"]');
+            if (головнаПосилання) {
+                головнаПосилання.classList.add('active');
+            }
+        };
+
+        // Функція для додавання класу active при кліку на посилання
+        document.addEventListener('DOMContentLoaded', () => {
+            const navLinks = document.querySelectorAll('nav a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    // Видаляємо клас active у всіх посилань
+                    navLinks.forEach(otherLink => otherLink.classList.remove('active'));
+                    // Додаємо клас active до поточного посилання
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <div class="navigation">
+            <img class="logo" src="girl-cosmetics-logo-design-icon_999827-868.avif" alt="logo">
+            <nav>
+                <div class="dropdown">
+                    <a href="#" class="active">Продукція</a>
+                    <div class="dropdown-content" id="продукція-dropdown">
+                        <a href="#">Догляд за обличчям</a>
+                        <a href="#">Догляд за тілом</a>
+                        <a href="#">Догляд за волоссям</a>
+                        <a href="#">Макіяж</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <a href="#">Про нас</a>
+                    <div class="dropdown-content" id="pro-nas-dropdown">
+                        <a href="#">Історія</a>
+                        <a href="#">Команда</a>
+                        <a href="#">Вакансії</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <a href="#">Акції</a>
+                    <div class="dropdown-content" id="akcii-dropdown">
+                        <a href="#">Нові надходження</a>
+                        <a href="#">Гарячі знижки</a>
+                        <a href="#">Подарункові сертифікати</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <a href="#">Контакти</a>
+                    <div class="dropdown-content" id="kontakti-dropdown">
+                        <a href="#">Наші магазини</a>
+                        <a href="#">Зворотній зв'язок</a>
+                        <a href="#">Підтримка</a>
+                    </div>
+                </div>
+            </nav>
+            <div class="tel">+380975815680</div>
+        </div>
+    </header>
+
+    <div class="video-background">
+        <video autoplay muted loop playsinline>
+            <source src="2421545-uhd_3840_2160_30fps.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay">
+            <h1>Природна краса з Flawless</h1>
+            <p>Наша косметика — це ніжний догляд і яскравий образ кожного дня.</p>
+            <button>Переглянути каталог</button>
+        </div>
+    </div>
+    <main>
+        <section class="sec-01">
+            <h2>Чому обирають нас ?</h2>
+            <p>Висока якість, натуральні компоненти,безпечні формули</p>
+        </section>
+        <section class="sec-02">
+            <!DOCTYPE html>
+            <html lang="uk">
+            <head>
+            <meta charset="UTF-8">
+            <title>Акції</title>
+            <style>
+            body {
+                font-family: Arial, sans-serif;
+            }
+            h2 {
+                background-color: #b89ca9;
+                color: white;
+                padding: 10px;
+                text-align: center;
+            }
+            .grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 30px;
+                padding: 20px;
+            }
+            .item {
+                text-align: center;
+            }
+            .item img {
+                width: 100px;
+                height: 100px;
+                object-fit: contain;
+            }
+            .old-price {
+                text-decoration: line-through;
+                color: gray;
+            }
+            .price {
+                color: red;
+                font-weight: bold;
+            }
+            </style>
+            <h2>АКЦІЇ</h2>
+            <div class="grid">
+            <div class="item">
+                <img src="пудра.jpg" alt="Powder">
+                <p><strong>rom&nd Sheer Powder Pearls</strong><br>cвітла пудра для обличчя</p>
+                <p class="price">345.00 ₴</p>
+                <p class="old-price">420.00 ₴</p>
+            </div>
+            <div class="item">
+                <img src="підводка.jpg" alt="Eyeliner">
+                <p><strong>ANASTASIA BEVERLY HILLS</strong><br>Підводка для очей</p>
+                <p class="price">877.00 ₴</p>
+                <p class="old-price">1200.00 ₴</p>
+            </div>
+            <div class="item">
+                <img src="бальзам.jpg" alt="Lip Gloss">
+                <p><strong>TRANSPARENT LAB</strong><br>Бальзам для губ</p>
+                <p class="price">529.00 ₴</p>
+                <p class="old-price">750.00 ₴</p>
+            </div>
+            <div class="item">
+                <img src="рум'яна.jpg" alt="Blusher">
+                <p><strong>House of Hur Moist</strong><br>рідкі рум'яна</p>
+                <p class="price">515.00 ₴</p>
+                <p class="old-price">690.00 ₴</p>
+            </div>
+            <div class="item">
+                <img src="шампунь.jpg" alt="Shampoo">
+                <p><strong>BJÖRN AXÉN</strong><br>Шампунь для об'єму волосся</p>
+                <p class="price">660.00 ₴</p>
+                <p class="old-price">1259.00 ₴</p>
+            </div>
+            <div class="item">
+                <img src="праймер для волосся.jpg" alt="Primer">
+                <p><strong>CURLY SHYLL</strong><br>Відновлюючий термозахисний праймер</p>
+                <p class="price">1124.00 ₴</p>
+                <p class="old-price">1800.00 ₴</p>
+            </div>
+            </div>
+            </body>
+            </html>
+            <section style="background-color: #fce6f4; padding: 40px 20px; text-align: center;">
+            <h2 style="margin-bottom: 30px;">НОВИНКИ</h2>
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+
+            <div style="background-color: white; padding: 20px; width: 250px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+                <p style="font-weight: bold;">NEW</p>
+                <img src="набір.jpg" alt="RATED GREEN REAL SHEA SET" style="width: 100%; height: auto; margin-bottom: 10px;">
+                <p style="font-weight: bold;">RATED GREEN<br>REAL SHEA SET</p>
+                <p>3 150.00 ₴</p>
+            </div>
+
+            <div style="background-color: white; padding: 20px; width: 250px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+                <p style="font-weight: bold;">NEW</p>
+                <img src="набір 2.jpg" alt="RATED GREEN REAL MARY SET" style="width: 100%; height: auto; margin-bottom: 10px;">
+                <p style="font-weight: bold;">RATED GREEN<br>REAL MARY SET</p>
+                <p>3 150.00 ₴</p>
+            </div>
+
+            <div style="background-color: white; padding: 20px; width: 250px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+                <p style="font-weight: bold;">NEW</p>
+                <img src="Dyson.PNG" alt="DYSON СТАЙЛЕР AIRWRAP" style="width: 100%; height: auto; margin-bottom: 10px;">
+                <p style="font-weight: bold;">DYSON<br>СТАЙЛЕР AIRWRAP</p>
+                <p>31 990.00 ₴</p>
+            </div>
+
+            </div>
+            </section>
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-around; padding: 20px;">
+            <h2 style="width: 100%; text-align: center;">БЕСТСЕЛЕРИ</h2>
+            <div style="width: 300px; margin-bottom: 20px; border: 1px solid #ccc; padding: 10px; text-align: center;">
+            <img src="крем для волосся.jpg" alt="Відновлюючий термозахисний крем для волосся" style="max-width: 100%; height: auto;">
+            <p style="margin-top: 10px;">RATED GREEN</p>
+            <p>Відновлюючий термозахисний крем для волосся</p>
+            <p>400.00 ₴ <del>500.00 ₴</del></p>
+            </div>
+            <div style="width: 300px; margin-bottom: 20px; border: 1px solid #ccc; padding: 10px; text-align: center;">
+            <img src="маска з авокадо.jpg" alt="AVOCADO NOURISHING SCALP PACK WITH BANANA" style="max-width: 100%; height: auto;">
+            <p style="margin-top: 10px;">RATED GREEN</p>
+            <p>AVOCADO NOURISHING SCALP PACK<br>WITH BANANA</p>
+            <p>Поживна маска з авокадо</p>
+            <p>852.00 ₴ <del>990.00 ₴</del></p>
+            </div>
+            <div style="width: 300px; margin-bottom: 20px; border: 1px solid #ccc; padding: 10px; text-align: center;">
+            <img src="шампунь з олією.jpg" alt="REAL SHEA NOURISHING SHAMPOO" style="max-width: 100%; height: auto;">
+            <p style="margin-top: 10px;">RATED GREEN</p>
+            <p>REAL SHEA NOURISHING SHAMPOO</p>
+            <p>Поживний шампунь з олією ши</p>
+            <p>1 150.00 ₴ <del>2 400.00 ₴</del></p>
+            </div>
+            <div style="width: 300px; margin-bottom: 20px; border: 1px solid #ccc; padding: 10px; text-align: center;">
+            <img src="маска.jpg" alt="ATACHE ESSENTIELLE REAFFIRMING MASK GREEN TEA" style="max-width: 100%; height: auto;">
+            <p style="margin-top: 10px;">ATACHE</p>
+            <p>ESSENTIELLE REAFFIRMING MASK<br>GREEN TEA</p>
+            <p>Відновлююча та заспокійлива маска з екстрактом зеленого чаю</p>
+            <p>1 500.00 ₴ <del>2 067.00 ₴</del></p>
+            </div>
+            </div>
+            <head>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <title>Декоративна косметика та відгуки</title>
+            <style>
+            body {
+            font-family: Arial, sans-serif;
+            background-color: #F5F0E6;
+            margin: 0;
+            padding: 0;
+            }
+
+            h2 {
+            text-align: center;
+            color: #6B3F4C;
+            font-size: 28px;
+            margin: 40px 0 30px;
+            }
+
+            .products-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            padding-bottom: 40px;
+            }
+
+            .product-card {
+            position: relative;
+            width: 220px;
+            }
+
+            .product-card img {
+            width: 100%;
+            border-radius: 8px;
+            }
+
+            .product-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(245, 240, 230, 0.85);
+            text-align: center;
+            padding: 6px;
+            border-radius: 0 0 8px 8px;
+            font-weight: bold;
+            color: #333;
+            }
+
+            .reviews-section {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 40px;
+            padding: 40px 20px;
+            }
+
+            .reviews-title {
+            background-color: #BFA4B8;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            padding: 16px;
+            border-radius: 10px;
+            text-align: center;
+            width: 200px;
+            }
+
+            .reviews-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            }
+
+            .review-card {
+            background-color: white;
+            width: 300px;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            text-align: center;
+            }
+
+            .review-card img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+            }
+
+            .review-text {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #333;
+            }
+
+            .review-author {
+            font-weight: bold;
+            color: #666;
+            }
+            </style>
+            </head>
+            <body>
+
+            <h2>ДЕКОРАТИВНА КОСМЕТИКА</h2>
+            <div class="products-container">
+            <div class="product-card">
+                <img src="images.jpg" alt="Очі" />
+                <div class="product-label">ОЧІ</div>
+            </div>
+            <div class="product-card">
+                <img src="72caccbbd28bb75a607c29b634cef0b8.jpg" alt="Губи" />
+                <div class="product-label">ГУБИ</div>
+            </div>
+            <div class="product-card">
+                <img src="face.jpg" alt="Обличчя" />
+                <div class="product-label">ОБЛИЧЧЯ</div>
+            </div>
+            <div class="product-card">
+                <img src="пензлі для макіяжу.jpg" alt="Пензлі для макіяжу" />
+                <div class="product-label">ПЕНЗЛІ ДЛЯ МАКІЯЖУ</div>
+            </div>
+            </div>
+
+            <div class="reviews-section">
+            <div class="reviews-title">Написати відгук</div>
+            <div class="reviews-list">
+            <div class="review-card">
+                <div class="review-text">Продукція чудова! Шкіра після маски неймовірно ніжна.</div>
+                <div class="review-author">– Олена К.</div>
+            </div>
+            <div class="review-card">
+                <div class="review-text">Шампунь просто топ! Волосся блискуче та слухняне.</div>
+                <div class="review-author">– Марія П.</div>
+            </div>
+            <div class="review-card">
+                <div class="review-text">Крем реально захищає волосся від гарячих приладів.</div>
+                <div class="review-author">– Інна Ж.</div>
+            </div>
+            </div>
+            </div>
+            <footer style="background-color: #1a1a1a; color: white; font-size: 14px;">
+            <div style="display: flex; justify-content: space-around; padding: 30px 10px; flex-wrap: wrap;">
+            <div style="text-align: center; max-width: 200px;">
+                <img src="easy-returns7112.jpg" alt="Обмін" style="height: 40px;">
+                <p>Легкий обмін та повернення товарів</p>
+            </div>
+            <div style="text-align: center; max-width: 200px;">
+                <img src="secure-payment2785.jpg" alt="Оплата" style="height: 40px;">
+                <p>Безпечна оплата на сайті або післяплата</p>
+            </div>
+            <div style="text-align: center; max-width: 200px;">
+                <img src="футер.jpg" alt="Підтримка" style="height: 40px;">
+                <p>24/7 Служба підтримки</p>
+            </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-around; flex-wrap: wrap; background-color: #000; padding: 30px 10px;">
+            <div>
+                <h4 style="color: #fff;">ДОПОМОГА</h4>
+                <p><a href="#" style="color: #ccc; text-decoration: none;">Оплата та доставка</a></p>
+                <p><a href="#" style="color: #ccc; text-decoration: none;">Обміни та повернення</a></p>
+                <p><a href="#" style="color: #ccc; text-decoration: none;">Контакти</a></p>
+                <p><a href="#" style="color: #ccc; text-decoration: none;">Про нас</a></p>
+            </div>
+            <div>
+                <h4 style="color: #fff;">КАТАЛОГ</h4>
+                <p><a href="#" style="color: #ccc; text-decoration: none;">Декоративна косметика</a></p>
+                <p><a href="#" style="color: #ccc; text-decoration: none;">Догляд за обличчям</a></p>
+                <p><a href="#" style="color: #ccc; text-decoration: none;">Догляд за тілом</a></p>
+                <p><a href="#" style="color: #ccc; text-decoration: none;">Догляд за волоссям</a></p>
+            </div>
+            <div>
+                <h4 style="color: #fff;">ЗВʼЯЗОК</h4>
+                <p>Ставайте частиною <b>@flawless.ua</b> у соцмережах</p>
+                <p>📞 0 975 81 5 680</p>
+                <p>з 08:00 до 00:00, без вихідних</p>
+            </div>
+            <div>
+                <h4 style="color: #fff;">FLAWLESS</h4>
+                <p>Підпишіться на розсилку<br>Отримуйте ексклюзивні пропозиції</p>
+                <form>
+                <input type="email" placeholder="EMAIL ADRESS" style="padding: 5px; width: 180px; margin-bottom: 10px;">
+                <button type="submit" style="padding: 5px 10px; background: #c71585; color: white; border: none;">OK</button>
+                </form>
+                <p style="margin-top: 10px;">flawless2025@gmail.com</p>
+            </div>
+            </div>
+
+            <div style="background-color: #111; text-align: center; padding: 15px;">
+            <p style="color: #ccc;">&copy; 2025 Flawless Cosmetics. Всі права захищено.</p>
+            </div>
+            </footer>
+            </body>
+            </html>
+        </section>
+    </main>
+
+    <section class="contact-form-container">
+        <h2>Зв'яжіться з нами</h2>
+        <form class="contact-form" method="post" action="#">
+            <fieldset>
+                <legend>Надішліть нам повідомлення</legend>
+                <label for="name">Ім'я:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="message">Повідомлення:</label>
+                <textarea id="message" name="message" required></textarea>
+
+                <input type="submit" value="Надіслати">
+            </fieldset>
+        </form>
+    </section>
+
+    <footer style="background-color: #1a1a1a; color: white; font-size: 14px;">
+        <div style="display: flex; justify-content: space-around; padding: 30px 10px; flex-wrap: wrap;">
+            <div style="text-align: center; max-width: 200px;">
+                <img src="easy-returns7112.jpg" alt="Обмін" style="height: 40px;">
+                <p>Легкий обмін та повернення товарів</p>
+            </div>
+            <div style="text-align: center; max-width: 200px;">
+                <img src="secure-payment2785.jpg" alt="Оплата" style="height: 40px;">
+                <p>Безпечна оплата на сайті або післяплата</p>
+            </div>
+            <div style="text-align: center; max-width: 200px;">
+                <img src="футер.jpg" alt="Підтримка" style="height: 40px;">
+                <p>24/7 Служба підтримки</p>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-around; flex-wrap: wrap; background-color: #000; padding: 30px 10px;">
+            <div>
+                <h4 style="color: #fff;">ДОПОМОГА</h4>
+                <p><a href="#" style="color: #ccc; text-decoration: none;">Оплата та доставка</a></p>
+                <p><a href="#" style="color: #ccc; text-decoration: none;">Обміни та повернення</a></p>
+                <p><a href="#" style="color: #ccc; text-decoration: none;">Контакти</a></p>
+                <p><a href="#" style="color: #ccc; text-decoration: none;">Про нас</a></p>
+            </div>
+            <div>
+                <h4 style="color: #fff;">КАТАЛОГ</h4>
+                <p><a href="#" style="color: #ccc; text-decoration: none;">Декоративна косметика</a></p>
+                <p><a href="#" style="color: #ccc; text-decoration: none;">Догляд за обличчям</a></p>
+                <p><a href="#" style="color: #ccc; text-decoration: none;">Догляд за тілом</a></p>
+                <p><a href="#" style="color: #ccc; text-decoration: none;">Догляд за волоссям</a></p>
+            </div>
+            <div>
+                <h4 style="color: #fff;">ЗВʼЯЗОК</h4>
+                <p>Ставайте частиною <b>@flawless.ua</b> у соцмережах</p>
+                <p>📞 0 975 81 5 680</p>
+                <p>з 08:00 до 00:00, без вихідних</p>
+            </div>
+            <div>
+                <h4 style="color: #fff;">FLAWLESS</h4>
+                <p>Підпишіться на розсилку<br>Отримуйте ексклюзивні пропозиції</p>
+                <form>
+                    <input type="email" placeholder="EMAIL ADRESS" style="padding: 5px; width: 180px; margin-bottom: 10px;">
+                    <button type="submit" style="padding: 5px 10px; background: #c71585; color: white; border: none;">OK</button>
+                </form>
+                <p style="margin-top: 10px;">flawless2025@gmail.com</p>
+            </div>
+        </div>
+
+        <div style="background-color: #111; text-align: center; padding: 15px;">
+            <p style="color: #ccc;">&copy; 2025 Flawless Cosmetics. Всі права захищено.</p>
+        </div>
+    </footer>
+</body>
+</html>
