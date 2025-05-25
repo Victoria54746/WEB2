@@ -318,43 +318,133 @@
         </div>
     </div>
     <section>
-        <h2>Ціни на послуги</h2>
-        <div class="pricing-container">
-            <div class="pricing-item">
-                <h3>Догляд за обличчям</h3>
-                <p>Базовий догляд</p>
-                <ul>
-                    <li>Очищення</li>
-                    <li>Тонізація</li>
-                    <li>Зволоження</li>
-                </ul>
-                <p>Ціна: 500 ₴</p>
-                <button>Замовити</button>
-            </div>
-            <div class="pricing-item">
-                <h3>Догляд за тілом</h3>
-                <p>Повний догляд</p>
-                <ul>
-                    <li>Пілінг</li>
-                    <li>Масаж</li>
-                    <li>Зволоження</li>
-                    <li>Живлення</li>
-                </ul>
-                <p>Ціна: 800 ₴</p>
-                <button>Замовити</button>
-            </div>
-            <div class="pricing-item">
-                <h3>Догляд за волоссям</h3>
-                <p>Преміум догляд</p>
-                <ul>
-                    <li>Маска</li>
-                    <li>Кондиціонер</li>
-                    <li>Укладка</li>
-                    <li>Живлення</li>
-                </ul>
-                <p>Ціна: 700 ₴</p>
-                <button>Замовити</button>
-            </div>
+        <head>
+  <meta charset="UTF-8">
+  <title>Ціни на послуги</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #fdf1f7;
+      margin: 0;
+      padding: 0;
+    }
+
+    h2 {
+      text-align: center;
+      background-color: #c38eb4;
+      color: white;
+      padding: 20px;
+      margin: 0;
+      font-size: 28px;
+    }
+
+    .pricing-container {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      padding: 40px 20px;
+      flex-wrap: wrap;
+    }
+
+    .pricing-item {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(195, 142, 180, 0.3);
+      padding: 25px;
+      width: 260px;
+      text-align: center;
+      border: 1px solid #f2d4e4;
+      transition: transform 0.3s ease;
+    }
+
+    .pricing-item:hover {
+      transform: scale(1.05);
+    }
+
+    .pricing-item h3 {
+      color: #c2185b;
+      margin-bottom: 5px;
+      font-size: 22px;
+    }
+
+    .pricing-item p {
+      color: #666;
+      margin: 10px 0;
+    }
+
+    .pricing-item ul {
+      list-style: none;
+      padding: 0;
+      margin: 15px 0;
+    }
+
+    .pricing-item ul li {
+      border-bottom: 1px solid #f1c1d7;
+      padding: 8px 0;
+      color: #444;
+    }
+
+    button {
+      background-color: #d81b60;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #ad1457;
+    }
+  </style>
+</head>
+<body>
+
+  <section>
+    <h2>Ціни на послуги</h2>
+    <div class="pricing-container">
+      <div class="pricing-item">
+        <h3>Догляд за обличчям</h3>
+        <p>Базовий догляд</p>
+        <ul>
+          <li>Очищення</li>
+          <li>Тонізація</li>
+          <li>Зволоження</li>
+        </ul>
+        <p>Ціна: 500 ₴</p>
+        <button>Замовити</button>
+      </div>
+      <div class="pricing-item">
+        <h3>Догляд за тілом</h3>
+        <p>Повний догляд</p>
+        <ul>
+          <li>Пілінг</li>
+          <li>Масаж</li>
+          <li>Зволоження</li>
+          <li>Живлення</li>
+        </ul>
+        <p>Ціна: 800 ₴</p>
+        <button>Замовити</button>
+      </div>
+      <div class="pricing-item">
+        <h3>Догляд за волоссям</h3>
+        <p>Преміум догляд</p>
+        <ul>
+          <li>Маска</li>
+          <li>Кондиціонер</li>
+          <li>Укладка</li>
+          <li>Живлення</li>
+        </ul>
+        <p>Ціна: 700 ₴</p>
+        <button>Замовити</button>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>
 
     <main>
         <section class="sec-01">
